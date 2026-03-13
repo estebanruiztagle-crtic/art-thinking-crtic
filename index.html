@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Art Thinking — CRTIC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  ::selection { background: var(--accent); color: var(--black); }
+  ::-moz-selection { background: var(--accent); color: var(--black); }
+
+  :root {
+    --black: #000000;
+    --white: #ffffff;
+    --dim: rgba(255,255,255,0.62);
+    --dimmer: rgba(255,255,255,0.42);
+    --accent: #4fffb0;
+    --accent2: #7b6fff;
+    --line: rgba(255,255,255,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAV ─────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 52px;
+    mix-blend-mode: normal;
+  }
+
+  .nav-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .nav-logo span {
+    color: var(--white);
+  }
+
+  .nav-tag {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dimmer);
+    border: 1px solid var(--line);
+    padding: 6px 14px;
+    border-radius: 2px;
+  }
+
+  /* ─── HERO ────────────────────────────────────── */
+  #hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg-text {
+    position: absolute;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(80px, 14vw, 180px);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: rgba(255,255,255,0.025);
+    white-space: nowrap;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 700px;
+    padding: 0 40px;
+  }
+
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.4s forwards;
+  }
+
+  .hero-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+    line-height: 1.8;
+    max-width: 420px;
+    margin: 0 auto 52px;
+    opacity: 0;
+    animation: fadeUp 1.2s cubic-bezier(0.16,1,0.3,1) 0.6s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.4s forwards;
+  }
+
+  .hero-scroll span {
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--dimmer);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── ANIMATION SECTION ───────────────────────── */
+  #animation-wrap {
+    position: relative;
+    height: 600vh;
+  }
+
+  #animation-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #frame-canvas {
+    width: min(80vh, 80vw);
+    height: min(80vh, 80vw);
+    object-fit: contain;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .anim-text-overlay {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    opacity: 0;
+  }
+
+  .anim-text-overlay.visible {
+    opacity: 1;
+    transform: none !important;
+  }
+
+  .overlay-left {
+    left: 52px;
+    top: 50%;
+    transform: translateY(calc(-50% + 20px));
+    max-width: 260px;
+  }
+
+  .overlay-right {
+    right: 52px;
+    top: 50%;
+    transform: translateY(calc(-50% + 20px));
+    max-width: 260px;
+    text-align: right;
+  }
+
+  .overlay-bottom {
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+  }
+
+  .overlay-top {
+    top: 120px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+  }
+
+  .anim-text-overlay.visible.overlay-left {
+    transform: translateY(-50%);
+  }
+
+  .anim-text-overlay.visible.overlay-right {
+    transform: translateY(-50%);
+  }
+
+  .anim-text-overlay.visible.overlay-bottom {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .anim-text-overlay.visible.overlay-top {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .overlay-label {
+    font-size: 9px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .overlay-heading {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(22px, 2.8vw, 36px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .overlay-body {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--dim);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── SECTIONS ────────────────────────────────── */
+  section {
+    padding: 140px 52px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--line);
+    margin: 0;
+  }
+
+  /* ─── QUOTE ───────────────────────────────────── */
+  #quote-section {
+    padding: 160px 52px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .quote-mark {
+    font-size: 80px;
+    line-height: 0;
+    color: var(--accent);
+    font-family: 'Space Grotesk', sans-serif;
+    margin-bottom: 32px;
+    display: block;
+    opacity: 0.75;
+  }
+
+  blockquote {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(22px, 3vw, 38px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+    color: var(--white);
+    margin-bottom: 28px;
+  }
+
+  .quote-attr {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  /* ─── TWO-COL ─────────────────────────────────── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 28px;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(32px, 4vw, 54px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 28px;
+  }
+
+  .section-body {
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--dim);
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+  }
+
+  .section-body p + p {
+    margin-top: 1em;
+  }
+
+  /* ─── COMPARISON TABLE ────────────────────────── */
+  #comparison {
+    padding: 140px 52px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .compare-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
+    margin-bottom: 0;
+  }
+
+  .compare-header .col-label {
+    padding: 20px 32px;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .compare-header .col-label:first-child {
+    color: var(--dimmer);
+  }
+
+  .compare-header .col-label.dt {
+    color: var(--dim);
+    border-left: 1px solid var(--line);
+  }
+
+  .compare-header .col-label.at {
+    color: var(--accent);
+    border-left: 1px solid var(--line);
+  }
+
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .compare-row:hover {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .compare-cell {
+    padding: 22px 32px;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+  }
+
+  .compare-cell:first-child {
+    color: var(--dimmer);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+  }
+
+  .compare-cell.dt-cell {
+    color: var(--dim);
+    border-left: 1px solid var(--line);
+  }
+
+  .compare-cell.at-cell {
+    color: var(--white);
+    border-left: 1px solid var(--line);
+  }
+
+  /* ─── OUTPUTS ─────────────────────────────────── */
+  .outputs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--line);
+    margin-top: 60px;
+  }
+
+  .output-item {
+    background: var(--black);
+    padding: 48px 40px;
+    transition: background 0.3s ease;
+  }
+
+  .output-item:hover {
+    background: rgba(79,255,176,0.03);
+  }
+
+  .output-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.16em;
+    margin-bottom: 20px;
+    opacity: 0.9;
+  }
+
+  .output-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+    line-height: 1.3;
+  }
+
+  .output-body {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* ─── PROCESS ─────────────────────────────────── */
+  #process {
+    padding: 140px 52px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    margin-top: 60px;
+  }
+
+  .step-card {
+    background: var(--black);
+    padding: 52px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.4s ease;
+  }
+
+  .step-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .step-card:hover { background: rgba(79,255,176,0.025); }
+  .step-card:hover::before { opacity: 1; }
+
+  .step-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(60px, 7vw, 96px);
+    font-weight: 200;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    margin-bottom: 24px;
+    letter-spacing: -0.04em;
+  }
+
+  .step-label {
+    font-size: 9px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .step-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  .step-body {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.85;
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+
+  .step-deliverable {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    border-top: 1px solid rgba(79,255,176,0.2);
+    padding-top: 20px;
+    line-height: 1.6;
+  }
+
+  .step-deliverable strong {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+
+  /* ─── SESSION ─────────────────────────────────── */
+  #session {
+    padding: 140px 52px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .timeline {
+    margin-top: 60px;
+    border-top: 1px solid var(--line);
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 120px 80px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 32px 0;
+    transition: background 0.3s ease;
+    padding-left: 0;
+  }
+
+  .timeline-item:hover {
+    padding-left: 8px;
+  }
+
+  .t-time {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: 0.06em;
+    padding-top: 2px;
+  }
+
+  .t-duration {
+    font-size: 10px;
+    color: var(--dimmer);
+    letter-spacing: 0.1em;
+    padding-top: 3px;
+  }
+
+  .t-content {}
+
+  .t-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+
+  .t-desc {
+    font-size: 12px;
+    color: var(--dim);
+    line-height: 1.8;
+    font-weight: 300;
+    max-width: 600px;
+  }
+
+  /* ─── WHY CRTIC ───────────────────────────────── */
+  #why-crtic {
+    padding: 140px 52px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--line);
+    margin-top: 60px;
+  }
+
+  .pillar-item {
+    background: var(--black);
+    padding: 40px 28px;
+    transition: background 0.3s ease;
+  }
+
+  .pillar-item:hover {
+    background: rgba(123,111,255,0.05);
+  }
+
+  .pillar-icon {
+    width: 32px;
+    height: 2px;
+    background: var(--accent2);
+    margin-bottom: 24px;
+  }
+
+  .pillar-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  .pillar-body {
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* ─── CTA ─────────────────────────────────────── */
+  #cta {
+    padding: 200px 52px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #cta::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(79,255,176,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-label {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+  }
+
+  .cta-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-sub {
+    font-size: 13px;
+    color: var(--dim);
+    margin-bottom: 56px;
+    line-height: 1.7;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 16px 40px;
+    border: 1px solid rgba(79,255,176,0.4);
+    color: var(--accent);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    z-index: -1;
+  }
+
+  .cta-btn:hover {
+    color: var(--black);
+    border-color: var(--accent);
+  }
+
+  .cta-btn:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* ─── FOOTER ──────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .footer-meta {
+    font-size: 10px;
+    color: var(--dimmer);
+    letter-spacing: 0.1em;
+  }
+
+  /* ─── REVEAL ANIMATIONS ───────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+                transform 0.9s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+  .reveal-delay-5 { transition-delay: 0.5s; }
+
+  /* ─── LOADING ─────────────────────────────────── */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+
+  #loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .loader-text {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--dimmer);
+  }
+
+  .loader-bar-wrap {
+    width: 200px;
+    height: 1px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .loader-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  /* ─── CURSOR ──────────────────────────────────── */
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border: 1px solid rgba(79,255,176,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9997;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    .cursor, .cursor-ring { display: none; }
+    nav { padding: 20px 24px; }
+    section, #comparison, #process, #session, #why-crtic, #quote-section, #cta { padding-left: 24px; padding-right: 24px; }
+    .two-col { grid-template-columns: 1fr; gap: 40px; }
+    .compare-header, .compare-row { grid-template-columns: 1fr 1fr; }
+    .compare-header .col-label:first-child, .compare-cell:first-child { display: none; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .outputs-grid { grid-template-columns: 1fr; }
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    .timeline-item { grid-template-columns: 90px 60px 1fr; }
+    .overlay-left, .overlay-right { display: none; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-text">Cargando experiencia</div>
+  <div class="loader-bar-wrap">
+    <div class="loader-bar" id="loader-bar"></div>
+  </div>
+</div>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>CRTIC</span> · Dirección de Innovación Tecnocreativa</div>
+  <div class="nav-tag">Art Thinking</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-text">Art Thinking</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Metodología de Innovación · CRTIC</div>
+    <h1 class="hero-title">Art<br><em>Thinking</em></h1>
+    <p class="hero-subtitle">La metodología que transforma desafíos reales en innovaciones que importan. Basada en Ars Electronica FutureLab. Adaptada al contexto chileno.</p>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ANIMATION SECTION -->
+<div id="animation-wrap">
+  <div id="animation-sticky">
+    <canvas id="frame-canvas"></canvas>
+
+    <!-- Overlay 1: What is it -->
+    <div class="anim-text-overlay overlay-left" id="overlay-1">
+      <div class="overlay-label">Fundamento</div>
+      <div class="overlay-heading">No resuelve problemas.<br>Los reformula.</div>
+      <div class="overlay-body">El Art Thinking genera preguntas creativas que redefinen el problema antes de resolverlo.</div>
+    </div>
+
+    <!-- Overlay 2: Origin -->
+    <div class="anim-text-overlay overlay-top" id="overlay-2">
+      <div class="overlay-label">Origen · Ars Electronica FutureLab, Linz 2014</div>
+      <div class="overlay-heading">Una brújula, no un mapa.</div>
+      <div class="overlay-body">Permite navegar múltiples futuros posibles sin predeterminar el destino.</div>
+    </div>
+
+    <!-- Overlay 3: Disruption -->
+    <div class="anim-text-overlay overlay-right" id="overlay-3">
+      <div class="overlay-label">Perturbación</div>
+      <div class="overlay-heading">La incomodidad es la señal.</div>
+      <div class="overlay-body">El arte produce incomodidad antes que confort. En el Art Thinking, eso no es un efecto secundario: es el método funcionando.</div>
+    </div>
+
+    <!-- Overlay 4: Horizon -->
+    <div class="anim-text-overlay overlay-bottom" id="overlay-4">
+      <div class="overlay-label">Horizonte temporal · 5–20 años</div>
+      <div class="overlay-heading">Cuestiona lo que nadie ha nombrado.</div>
+      <div class="overlay-body">Fractura los marcos que parecen obvios. Formula preguntas suficientemente potentes para redirigir la estrategia de una organización entera.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- QUOTE -->
+<div id="quote-section">
+  <div class="reveal">
+    <span class="quote-mark">"</span>
+    <blockquote>El arte crea preguntas creativas; el diseño forja soluciones creativas. El Art Thinking opera antes: cuestiona si estamos resolviendo el problema correcto.</blockquote>
+    <div class="quote-attr">Hideaki Ogawa · Director Artístico, Ars Electronica FutureLab</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- COMPARISON -->
+<div id="comparison">
+  <div class="reveal">
+    <div class="section-label">Distinción Central</div>
+    <div class="section-title">Design Thinking vs.<br>Art Thinking</div>
+  </div>
+  <div class="reveal reveal-delay-2">
+    <div class="compare-header">
+      <div class="col-label">Dimensión</div>
+      <div class="col-label dt">Design Thinking</div>
+      <div class="col-label at">Art Thinking</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-cell">Enfoque</div>
+      <div class="compare-cell dt-cell">Resuelve el problema enunciado</div>
+      <div class="compare-cell at-cell">Reformula el problema antes de resolverlo</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-cell">Produce</div>
+      <div class="compare-cell dt-cell">Soluciones creativas</div>
+      <div class="compare-cell at-cell">Preguntas creativas</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-cell">Horizonte</div>
+      <div class="compare-cell dt-cell">1–3 años</div>
+      <div class="compare-cell at-cell">5–20 años</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-cell">Punto de partida</div>
+      <div class="compare-cell dt-cell">Empatía con el usuario</div>
+      <div class="compare-cell at-cell">Perturbación de supuestos</div>
+    </div>
+    <div class="compare-row">
+      <div class="compare-cell">Validación</div>
+      <div class="compare-cell dt-cell">Soluciones testadas con usuarios</div>
+      <div class="compare-cell at-cell">Prototipos como experimentos sociales</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- WHAT IT PRODUCES -->
+<section>
+  <div class="reveal">
+    <div class="section-label">Resultados</div>
+    <div class="section-title">Lo que el Art Thinking<br>puede producir</div>
+  </div>
+  <div class="outputs-grid">
+    <div class="output-item reveal reveal-delay-1">
+      <div class="output-number">01</div>
+      <div class="output-title">Reencuadre del problema</div>
+      <div class="output-body">Cuando el desafío declarado encubre el desafío real. El Art Thinking lo detecta antes de invertir tiempo y recursos en resolver la pregunta equivocada.</div>
+    </div>
+    <div class="output-item reveal reveal-delay-2">
+      <div class="output-number">02</div>
+      <div class="output-title">Preguntas estratégicas de largo alcance</div>
+      <div class="output-body">Visiones de futuro suficientemente concretas para orientar decisiones presentes, sin predeterminar el camino ni cerrar posibilidades.</div>
+    </div>
+    <div class="output-item reveal reveal-delay-3">
+      <div class="output-number">03</div>
+      <div class="output-title">Prototipos como experimentos sociales</div>
+      <div class="output-body">No demos comerciales. Artefactos que hacen tangible lo abstracto y generan retroalimentación genuina de audiencias reales.</div>
+    </div>
+    <div class="output-item reveal reveal-delay-4">
+      <div class="output-number">04</div>
+      <div class="output-title">Propiedad intelectual co-creada</div>
+      <div class="output-body">Innovaciones que no existían antes del proceso conjunto y que ninguna de las partes hubiera producido sola.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROCESS -->
+<div id="process">
+  <div class="reveal">
+    <div class="section-label">Metodología · CRTIC</div>
+    <div class="section-title">Tres pasos.<br>Un ciclo continuo.</div>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card reveal reveal-delay-1">
+      <div class="step-number">01</div>
+      <div class="step-label">Paso 1</div>
+      <div class="step-title">Diagnóstico Tecnocreativo</div>
+      <div class="step-body">Fracturamos el encuadre del problema. Auditamos dolores declarados y latentes, cuestionamos supuestos no nombrados y reformulamos el desafío como preguntas creativas.</div>
+      <div class="step-deliverable">
+        <strong>Entregable</strong>
+        Brújula Creativa — diagnóstico con preguntas generativas y Brief de innovación en dos semanas.
+      </div>
+    </div>
+    <div class="step-card reveal reveal-delay-2">
+      <div class="step-number">02</div>
+      <div class="step-label">Paso 2</div>
+      <div class="step-title">Prototipado de Laboratorio</div>
+      <div class="step-body">El Laboratorio CRTIC opera como perturbador de supuestos. Las preguntas generativas se materializan en prototipos tangibles expuestos a audiencias reales.</div>
+      <div class="step-deliverable">
+        <strong>Entregable</strong>
+        Prototipo funcional + registro de retroalimentación pública + iteraciones documentadas.
+      </div>
+    </div>
+    <div class="step-card reveal reveal-delay-3">
+      <div class="step-number">03</div>
+      <div class="step-label">Paso 3</div>
+      <div class="step-title">Transferencia y Autonomía</div>
+      <div class="step-body">El objetivo no es que el partner dependa del CRTIC: es que desarrolle capacidad propia. Transferimos metodología, aprendizajes y propiedad intelectual co-creada.</div>
+      <div class="step-deliverable">
+        <strong>Entregable</strong>
+        Capacidades internas instaladas + PI co-creada + reporte de impacto y transferencia.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- WHY CRTIC -->
+<div id="why-crtic">
+  <div class="two-col">
+    <div class="reveal">
+      <div class="section-label">Partner ideal</div>
+      <div class="section-title">Por qué CRTIC es diferente</div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="section-body">
+        <p>No cualquier actor puede aplicar Art Thinking con rigor. La metodología exige algo que no se improvisa: un ecosistema real donde arte, tecnología y capacidad industrial convivan de forma permanente.</p>
+        <p>CRTIC es la única entidad en Chile que opera desde esa intersección — no como simulación de taller, sino como fábrica digital tecnocreativa que produce transformación real en industrias reales.</p>
+      </div>
+    </div>
+  </div>
+  <div class="pillars-grid">
+    <div class="pillar-item reveal reveal-delay-1">
+      <div class="pillar-icon"></div>
+      <div class="pillar-title">Expertos en Art Thinking aplicado</div>
+      <div class="pillar-body">Decálogo metodológico propio con base en Ars Electronica FutureLab, adaptado al contexto industrial chileno.</div>
+    </div>
+    <div class="pillar-item reveal reveal-delay-2">
+      <div class="pillar-icon"></div>
+      <div class="pillar-title">Laboratorio físico de inmersión</div>
+      <div class="pillar-body">Entorno diseñado para experiencias tecnológicas inmersivas que operan como perturbadores de supuestos.</div>
+    </div>
+    <div class="pillar-item reveal reveal-delay-3">
+      <div class="pillar-icon"></div>
+      <div class="pillar-title">Equipos interdisciplinarios</div>
+      <div class="pillar-body">Artistas, tecnólogos, diseñadores e investigadores que trabajan juntos de forma continua. La interdisciplina es estructural, no nominal.</div>
+    </div>
+    <div class="pillar-item reveal reveal-delay-4">
+      <div class="pillar-icon"></div>
+      <div class="pillar-title">Vocación de impacto nacional</div>
+      <div class="pillar-body">Cada proyecto debe demostrar cómo su resultado podría propagarse más allá del partner. No producimos innovación para una empresa: la producimos para una industria.</div>
+    </div>
+    <div class="pillar-item reveal reveal-delay-5">
+      <div class="pillar-icon"></div>
+      <div class="pillar-title">Modelo de partner, no de proveedor</div>
+      <div class="pillar-body">CRTIC no vende servicios: construye alianzas donde ambas partes asumen riesgo, aportan recursos y comparten hallazgos.</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SESSION -->
+<div id="session">
+  <div class="two-col" style="align-items:end; margin-bottom:0;">
+    <div class="reveal">
+      <div class="section-label">Primera sesión</div>
+      <div class="section-title">Brújula Creativa</div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="section-body">Una sesión de diagnóstico de 2,5 horas. No es un taller de brainstorming. Es un proceso estructurado para identificar el desafío real debajo del desafío declarado.</div>
+    </div>
+  </div>
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="t-time">08:30</div>
+      <div class="t-duration">15 min</div>
+      <div class="t-content">
+        <div class="t-name">Calibración inicial</div>
+        <div class="t-desc">El facilitador presenta el contrato de trabajo: la sesión no busca soluciones, busca mejores preguntas. Los participantes declaran sus supuestos de entrada.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="t-time">08:45</div>
+      <div class="t-duration">45 min</div>
+      <div class="t-content">
+        <div class="t-name">Espejo Roto — fractura de supuestos</div>
+        <div class="t-desc">Los participantes son conducidos al Laboratorio CRTIC. La tecnología inmersiva no ilustra el problema: lo perturba. ¿Qué ven ahora que no veían antes?</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="t-time">09:30</div>
+      <div class="t-duration">35 min</div>
+      <div class="t-content">
+        <div class="t-name">Campo de Tensión — auditoría de dolores</div>
+        <div class="t-desc">El grupo mapea los dolores reales: los declarados y los latentes. El facilitador presiona donde el grupo evita ir. La incomodidad es información.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="t-time">10:05</div>
+      <div class="t-duration">20 min</div>
+      <div class="t-content">
+        <div class="t-name">Brújula Creativa — preguntas generativas</div>
+        <div class="t-desc">Con el encuadre fracturado, el grupo formula entre 3 y 5 preguntas creativas suficientemente potentes para redirigir la exploración. Insumo central del Brief.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="t-time">10:25</div>
+      <div class="t-duration">5 min</div>
+      <div class="t-content">
+        <div class="t-name">Contrato de continuidad</div>
+        <div class="t-desc">Se acuerdan compromisos mutuos: qué aportará la organización, qué aportará CRTIC, y qué condiciones necesita el proceso para producir resultados genuinos.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<div id="cta">
+  <div class="reveal">
+    <div class="cta-label">Empieza aquí</div>
+    <h2 class="cta-title">¿Tu industria tiene preguntas sin formular?</h2>
+    <p class="cta-sub">Eso es exactamente donde empieza el trabajo del CRTIC.</p>
+    <a href="https://crtic.cl" class="cta-btn">Iniciar conversación</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CRTIC · Centro Revolución Tecnológica en Industrias Creativas</div>
+  <div class="footer-meta">crtic.cl · Dirección de Innovación Tecnocreativa</div>
+</footer>
+
+<script>
+// ─── CURSOR ──────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  cursor.style.left = cx + 'px';
+  cursor.style.top = cy + 'px';
+});
+
+function animRing() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  cursorRing.style.left = rx + 'px';
+  cursorRing.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+// ─── FRAME ANIMATION ─────────────────────────────
+const TOTAL_FRAMES = 122;
+const FRAME_PREFIX = 'frames/frame_';
+const canvas = document.getElementById('frame-canvas');
+const ctx = canvas.getContext('2d');
+
+// Set canvas resolution
+canvas.width = 1080;
+canvas.height = 1080;
+
+const frames = [];
+let loadedCount = 0;
+
+const loaderBar = document.getElementById('loader-bar');
+const loader = document.getElementById('loader');
+
+// Preload all frames
+for (let i = 0; i < TOTAL_FRAMES; i++) {
+  const img = new Image();
+  const paddedNum = String(i).padStart(3, '0');
+  img.src = `${FRAME_PREFIX}${paddedNum}.jpg`;
+  img.onload = () => {
+    loadedCount++;
+    const pct = (loadedCount / TOTAL_FRAMES) * 100;
+    loaderBar.style.width = pct + '%';
+    if (loadedCount === TOTAL_FRAMES) {
+      setTimeout(() => {
+        loader.classList.add('hidden');
+        drawFrame(0);
+      }, 400);
+    }
+  };
+  frames[i] = img;
+}
+
+function drawFrame(index) {
+  const i = Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.floor(index)));
+  if (frames[i] && frames[i].complete) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(frames[i], 0, 0, canvas.width, canvas.height);
+  }
+}
+
+// ─── SCROLL → FRAME MAPPING ───────────────────────
+const animWrap = document.getElementById('animation-wrap');
+const overlays = [
+  { el: document.getElementById('overlay-1'), start: 0.05, end: 0.32 },
+  { el: document.getElementById('overlay-2'), start: 0.30, end: 0.52 },
+  { el: document.getElementById('overlay-3'), start: 0.50, end: 0.72 },
+  { el: document.getElementById('overlay-4'), start: 0.72, end: 0.95 },
+];
+
+let currentFrame = 0;
+let targetFrame = 0;
+let rafId = null;
+
+function onScroll() {
+  const rect = animWrap.getBoundingClientRect();
+  const scrollable = animWrap.offsetHeight - window.innerHeight;
+  const scrolled = -rect.top;
+  const progress = Math.max(0, Math.min(1, scrolled / scrollable));
+
+  targetFrame = progress * (TOTAL_FRAMES - 1);
+
+  // Update overlays
+  overlays.forEach(o => {
+    const visible = progress >= o.start && progress <= o.end;
+    if (visible) {
+      o.el.classList.add('visible');
+    } else {
+      o.el.classList.remove('visible');
+    }
+  });
+
+  if (!rafId) {
+    rafId = requestAnimationFrame(animateFrame);
+  }
+}
+
+function animateFrame() {
+  currentFrame += (targetFrame - currentFrame) * 0.15;
+  drawFrame(currentFrame);
+  if (Math.abs(targetFrame - currentFrame) > 0.1) {
+    rafId = requestAnimationFrame(animateFrame);
+  } else {
+    drawFrame(targetFrame);
+    rafId = null;
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// ─── REVEAL ON SCROLL ─────────────────────────────
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('in-view');
+    }
+  });
+}, { threshold: 0.12 });
+
+revealEls.forEach(el => revealObs.observe(el));
+
+// ─── DRAW INITIAL FRAME ───────────────────────────
+// Draw black initially
+ctx.fillStyle = '#000';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+</script>
+</body>
+</html>
