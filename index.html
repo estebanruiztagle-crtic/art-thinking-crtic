@@ -941,6 +941,161 @@
     transition: transform 0.15s ease, width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
   }
 
+  /* ─── VALUE DIAGRAM ──────────────────────────────── */
+  #value-section {
+    padding: 140px 52px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .val-diagram {
+    position: relative;
+    height: 540px;
+    margin-top: 60px;
+  }
+
+  .val-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  .val-center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  .val-center-pulse {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(79,255,176,0.25);
+    border-radius: 50%;
+    animation: valPulse 3s ease-in-out infinite;
+  }
+
+  .val-center-pulse-2 { inset: -18px; border-color: rgba(79,255,176,0.1); animation-delay: 1s; }
+  .val-center-pulse-3 { inset: -36px; border-color: rgba(79,255,176,0.05); animation-delay: 2s; }
+
+  @keyframes valPulse {
+    0%, 100% { opacity: 0.4; transform: scale(0.98); }
+    50% { opacity: 1; transform: scale(1.02); }
+  }
+
+  .val-center-dot {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(79,255,176,0.07), transparent 70%);
+    border: 1px solid rgba(79,255,176,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .val-center-dot span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .val-node {
+    position: absolute;
+    width: 240px;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .val-node[data-node="1"] { left: 50%; top: 2%; transform: translateX(-50%); }
+  .val-node[data-node="2"] { left: 2%; bottom: 4%; }
+  .val-node[data-node="3"] { right: 2%; bottom: 4%; }
+
+  .val-node-content {
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 24px 22px;
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .val-node-content::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .val-node:hover .val-node-content { background: rgba(79,255,176,0.03); border-color: rgba(79,255,176,0.2); }
+  .val-node:hover .val-node-content::after { opacity: 1; }
+
+  .val-node-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    opacity: 0.6;
+    margin-bottom: 12px;
+  }
+
+  .val-node-question {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    color: var(--white);
+  }
+
+  .val-node-detail {
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.8;
+    font-weight: 300;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    margin-top: 0;
+    transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease, margin-top 0.4s ease;
+  }
+
+  .val-node:hover .val-node-detail { max-height: 140px; opacity: 1; margin-top: 12px; }
+
+  .val-node-tag {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 1px solid rgba(79,255,176,0.15);
+    transition: all 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .val-node:hover .val-node-tag { opacity: 0.7; max-height: 30px; margin-top: 14px; padding-top: 12px; }
+
   @media (max-width: 768px) {
     .cursor, .cursor-ring { display: none; }
     nav { padding: 20px 24px; }
@@ -954,6 +1109,12 @@
     .timeline-item { grid-template-columns: 70px 1fr; }
     .overlay-left, .overlay-right { display: none; }
     footer { flex-direction: column; gap: 12px; text-align: center; }
+    #value-section { padding-left: 24px; padding-right: 24px; }
+    .val-diagram { height: auto; }
+    .val-svg, .val-center { display: none; }
+    .val-node { position: static !important; transform: none !important; width: 100%; margin-bottom: 16px; }
+    .val-node-detail { max-height: 200px; opacity: 1; margin-top: 12px; }
+    .val-node-tag { opacity: 0.7; max-height: 30px; margin-top: 14px; padding-top: 12px; }
   }
 </style>
 </head>
@@ -1274,6 +1435,62 @@
 
 <div class="divider"></div>
 
+<!-- VALUE DIAGRAM -->
+<div id="value-section">
+  <div class="two-col reveal">
+    <div>
+      <div class="section-label">El valor del Art Thinking</div>
+      <div class="section-title">Co-crear<br>innovaciones<br>del mañana</div>
+    </div>
+    <div class="section-body reveal reveal-delay-2">
+      <p>El Art Thinking no resuelve el presente. Prepara a las organizaciones para enfrentar los problemas del mañana: formula las preguntas correctas, diseña los futuros posibles y co-crea el valor que aún no existe.</p>
+      <p style="margin-top:1em; font-size:11px; color:var(--dimmer);">Pasa el cursor sobre cada dimensión para explorar.</p>
+    </div>
+  </div>
+
+  <div class="val-diagram reveal reveal-delay-3" id="val-diagram">
+    <svg class="val-svg" id="val-svg"></svg>
+
+    <div class="val-center" id="val-center">
+      <div class="val-center-pulse"></div>
+      <div class="val-center-pulse val-center-pulse-2"></div>
+      <div class="val-center-pulse val-center-pulse-3"></div>
+      <div class="val-center-dot">
+        <span>Art<br>Thinking</span>
+      </div>
+    </div>
+
+    <div class="val-node" data-node="1">
+      <div class="val-node-content">
+        <div class="val-node-num">01</div>
+        <div class="val-node-question">¿Qué preguntas hacer?</div>
+        <div class="val-node-detail">Reformula el problema antes de resolverlo. Genera preguntas creativas suficientemente potentes para redirigir la estrategia de una organización entera.</div>
+        <div class="val-node-tag">3–5 preguntas generativas por sesión</div>
+      </div>
+    </div>
+
+    <div class="val-node" data-node="2">
+      <div class="val-node-content">
+        <div class="val-node-num">02</div>
+        <div class="val-node-question">¿Qué futuros construir?</div>
+        <div class="val-node-detail">Una brújula que permite navegar múltiples futuros posibles sin predeterminar el destino. No predice el futuro: orienta hacia él.</div>
+        <div class="val-node-tag">Horizonte 5–20 años</div>
+      </div>
+    </div>
+
+    <div class="val-node" data-node="3">
+      <div class="val-node-content">
+        <div class="val-node-num">03</div>
+        <div class="val-node-question">¿Qué valor crear que aún no existe?</div>
+        <div class="val-node-detail">Innovaciones que no existían antes del proceso conjunto. Propiedad intelectual co-creada que ninguna parte hubiera producido sola.</div>
+        <div class="val-node-tag">Propiedad intelectual co-creada</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
 <!-- CTA -->
 <div id="cta">
   <div class="reveal">
@@ -1417,6 +1634,82 @@ const revealObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 revealEls.forEach(el => revealObs.observe(el));
+
+// ─── VALUE DIAGRAM ────────────────────────────────
+(function initValueDiagram() {
+  const diagram = document.getElementById('val-diagram');
+  const svg = document.getElementById('val-svg');
+  const centerEl = document.getElementById('val-center');
+  const nodes = document.querySelectorAll('.val-node');
+  if (!diagram || !svg || !centerEl) return;
+
+  function getRC(el) {
+    const dr = diagram.getBoundingClientRect();
+    const er = el.getBoundingClientRect();
+    return { x: er.left + er.width / 2 - dr.left, y: er.top + er.height / 2 - dr.top };
+  }
+
+  function drawLines() {
+    svg.innerHTML = '';
+    const w = diagram.offsetWidth, h = diagram.offsetHeight;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+    const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    defs.innerHTML = '<filter id="vglow"><feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>';
+    svg.appendChild(defs);
+
+    const cc = getRC(centerEl);
+    const ncs = Array.from(nodes).map(n => getRC(n.querySelector('.val-node-content')));
+
+    // Triangle outline (very subtle)
+    [[0,1],[1,2],[2,0]].forEach(([a,b]) => {
+      const l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', ncs[a].x); l.setAttribute('y1', ncs[a].y);
+      l.setAttribute('x2', ncs[b].x); l.setAttribute('y2', ncs[b].y);
+      l.setAttribute('stroke', 'rgba(255,255,255,0.04)');
+      l.setAttribute('stroke-width', '1');
+      svg.appendChild(l);
+    });
+
+    // Lines + particles from center to each node
+    ncs.forEach((nc, i) => {
+      const pid = `vpath-${i}`;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('id', pid);
+      path.setAttribute('d', `M ${cc.x} ${cc.y} L ${nc.x} ${nc.y}`);
+      path.setAttribute('fill', 'none'); path.setAttribute('stroke', 'none');
+      svg.appendChild(path);
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', cc.x); line.setAttribute('y1', cc.y);
+      line.setAttribute('x2', nc.x); line.setAttribute('y2', nc.y);
+      line.setAttribute('stroke', 'rgba(79,255,176,0.12)');
+      line.setAttribute('stroke-width', '1');
+      line.setAttribute('stroke-dasharray', '4 8');
+      svg.appendChild(line);
+
+      // Animated particle
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('r', '2.5');
+      dot.setAttribute('fill', '#4fffb0');
+      dot.setAttribute('filter', 'url(#vglow)');
+      dot.setAttribute('opacity', '0.6');
+      const anim = document.createElementNS('http://www.w3.org/2000/svg', 'animateMotion');
+      anim.setAttribute('dur', `${2.4 + i * 0.9}s`);
+      anim.setAttribute('repeatCount', 'indefinite');
+      anim.setAttribute('calcMode', 'linear');
+      const mp = document.createElementNS('http://www.w3.org/2000/svg', 'mpath');
+      mp.setAttribute('href', `#${pid}`);
+      anim.appendChild(mp);
+      dot.appendChild(anim);
+      svg.appendChild(dot);
+    });
+  }
+
+  // Draw after layout is stable
+  setTimeout(drawLines, 300);
+  window.addEventListener('resize', drawLines);
+})();
 
 // ─── DRAW INITIAL FRAME ───────────────────────────
 // Draw black initially
