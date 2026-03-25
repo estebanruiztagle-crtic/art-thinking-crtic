@@ -311,6 +311,28 @@
     margin: 0;
   }
 
+  /* ─── DEFINITION ──────────────────────────────── */
+  #definition-section {
+    padding: 120px 52px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .definition-text {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(20px, 2.6vw, 32px);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.45;
+    color: var(--white);
+    margin-top: 28px;
+  }
+
+  .definition-text em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
   /* ─── QUOTE ───────────────────────────────────── */
   #quote-section {
     padding: 160px 52px;
@@ -380,6 +402,16 @@
 
   .section-body p + p {
     margin-top: 1em;
+  }
+
+  .comparison-intro {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--dim);
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+    max-width: 680px;
+    margin-top: 24px;
   }
 
   /* ─── COMPARISON TABLE ────────────────────────── */
@@ -996,6 +1028,16 @@
 
 <div class="divider"></div>
 
+<!-- DEFINITION STATEMENT -->
+<div id="definition-section">
+  <div class="reveal">
+    <div class="section-label">Definición</div>
+    <p class="definition-text">El Art Thinking es una metodología de innovación que usa el pensamiento y las prácticas artísticas como instrumentos de trabajo <em>—no como decoración—</em> para abordar desafíos complejos.</p>
+  </div>
+</div>
+
+<div class="divider"></div>
+
 <!-- QUOTE -->
 <div id="quote-section">
   <div class="reveal">
@@ -1012,6 +1054,7 @@
   <div class="reveal">
     <div class="section-label">Distinción Central</div>
     <div class="section-title">Design Thinking vs.<br>Art Thinking</div>
+    <p class="comparison-intro">Su principio fundacional invierte la lógica dominante de la innovación: mientras otras metodologías generan soluciones creativas a problemas definidos, el Art Thinking genera preguntas creativas que redefinen el problema mismo.</p>
   </div>
   <div class="reveal reveal-delay-2">
     <div class="compare-header">
